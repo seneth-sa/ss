@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my girlfriend, Imesha? 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #ffe6f0 0%, #ffc0cb 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* floating hearts background decoration */
+        .heart-bg {
+            position: absolute;
+            color: rgba(255, 80, 120, 0.25);
+            font-size: 3rem;
+            user-select: none;
+            pointer-events: none;
+            animation: float 6s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(6px);
+            border-radius: 48px;
+            padding: 3rem 2.5rem 3rem 2.5rem;
+            box-shadow: 0 25px 40px rgba(190, 40, 80, 0.25);
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            max-width: 700px;
+            width: 90%;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #b02b4b;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 8px rgba(255, 140, 160, 0.3);
+            font-weight: 700;
+        }
+
+        .sub {
+            font-size: 1.3rem;
+            color: #c14a6b;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .button-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 130px;
+        }
+
+        .btn {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            font-weight: 600;
+            padding: 1rem 3rem;
+            border-radius: 60px;
+            box-shadow: 0 8px 0 #ab2746, 0 12px 20px rgba(160, 40, 70, 0.3);
+            transition: transform 0.1s, box-shadow 0.1s;
+            letter-spacing: 1px;
+            border: 2px solid #fff3f8;
+            position: relative;
+            z-index: 20;
+        }
+
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #ab2746, 0 8px 15px rgba(160, 40, 70, 0.3);
+        }
+
+        .yes-btn {
+            background: #ff4f79;
+            color: white;
+            text-shadow: 1px 1px 0 #b02b4b;
+            box-shadow: 0 8px 0 #b02b4b, 0 12px 20px rgba(190, 40, 80, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+        }
+
+        .yes-btn:hover {
+            background: #ff6389;
+            transform: scale(1.02);
+        }
+
+        .no-btn {
+            background: #f0f0f0;
+            color: #a13a55;
+            box-shadow: 0 8px 0 #b0b0b0, 0 12px 20px rgba(120, 80, 90, 0.3);
+            text-shadow: 1px 1px 0 #ffffff;
+            transition: left 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), background 0.2s;
+            will-change: left, top;
+            /* left/top will be set by JS when escaping */
+            position: relative; /* default flow, but JS may toggle to fixed */
+        }
+
+        /* celebration message */
+        .celebrate {
+            font-size: 2.4rem;
+            color: #d42d5c;
+            margin-top: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: pop 0.5s ease-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* small floating hearts added via JS for extra fun */
+        .mini-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 1.8rem;
+            animation: fall 1.5s forwards ease-out;
+            color: #ff4f79;
+            text-shadow: 0 0 6px #ffb6c1;
+        }
+
+        @keyframes fall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(120px) rotate(40deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- decorative floating hearts -->
+    <div class="heart-bg" style="left: 5%; top: 15%; animation-delay: 0s;">❤️</div>
+    <div class="heart-bg" style="left: 85%; top: 20%; animation-delay: 1.5s;">💖</div>
+    <div class="heart-bg" style="left: 15%; top: 75%; animation-delay: 0.8s;">💗</div>
+    <div class="heart-bg" style="left: 90%; top: 70%; animation-delay: 2.2s;">💓</div>
+    <div class="heart-bg" style="left: 45%; top: 10%; animation-delay: 1.2s;">🌸</div>
+    <div class="heart-bg" style="left: 70%; top: 88%; animation-delay: 0.4s;">💕</div>
+
+    <div class="card" id="card">
+        <h1>Will you be my girlfriend, Imesha? 🌹</h1>
+        <div class="sub">(there's only one right answer 😉)</div>
+
+        <div class="button-area" id="buttonArea">
+            <button class="btn yes-btn" id="yesBtn">Yes 💖</button>
+            <button class="btn no-btn" id="noBtn">No 🙈</button>
+        </div>
+
+        <!-- hidden success message, shown after YES -->
+        <div id="successMessage" class="celebrate hidden">
+            💞 I love you too 💞
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const successMsg = document.getElementById('successMessage');
+            const card = document.getElementById('card');
+            const buttonArea = document.getElementById('buttonArea');
+
+            // ---- make No button escape when cursor gets close ----
+            // distance threshold (px) – if cursor closer than this, no button runs
+            const ESCAPE_DISTANCE = 120; 
+
+            // variables to track if we are already in "escaped/fixed" mode for noBtn
+            let isNoBtnEscaped = false;
+
+            // store original parent and position for possible reset (not strictly needed but safe)
+            const originalParent = noBtn.parentNode;
+
+            // --- helper: move no button to a random position away from cursor ---
+            function escapeNoButton(cursorX, cursorY) {
+                // if button is not already positioned fixed, convert it
+                if (!isNoBtnEscaped) {
+                    // get current size and position before changing positioning
+                    const rect = noBtn.getBoundingClientRect();
+                    const btnWidth = rect.width;
+                    const btnHeight = rect.height;
+
+                    // set to fixed to move freely
+                    noBtn.style.position = 'fixed';
+                    // set width/height explicit so it doesn't collapse
+                    noBtn.style.width = btnWidth + 'px';
+                    noBtn.style.height = btnHeight + 'px';
+
+                    // remove from flex flow? we keep it in DOM but fixed removes from flow.
+                    // To prevent layout shift, we could add a placeholder, but usually fine.
+                    // We'll also prevent the area from collapsing: buttonArea min-height already set.
+                    isNoBtnEscaped = true;
+                }
+
+                // current fixed position (or default)
+                let currentLeft = parseFloat(noBtn.style.left);
+                let currentTop = parseFloat(noBtn.style.top);
+                if (isNaN(currentLeft) || isNaN(currentTop)) {
+                    // if not set yet, use initial rect
+                    const rect = noBtn.getBoundingClientRect();
+                    currentLeft = rect.left;
+                    currentTop = rect.top;
+                }
+
+                // get button dimensions (consistent)
+                const btnRect = noBtn.getBoundingClientRect();
+                const btnW = btnRect.width;
+                const btnH = btnRect.height;
+
+                // viewport bounds
+                const maxLeft = window.innerWidth - btnW - 10;
+                const maxTop = window.innerHeight - btnH - 10;
+                const minLeft = 10;
+                const minTop = 10;
+
+                // we want new position far from cursor
+                let newLeft, newTop;
+                let attempts = 0;
+                const maxAttempts = 60;
+                let bestLeft = currentLeft, bestTop = currentTop;
+                let bestDistance = -1;
+
+                // try random positions, pick one that is far from cursor AND not too close to yes button
+                const yesRect = yesBtn.getBoundingClientRect();
+                const yesCenterX = yesRect.left + yesRect.width / 2;
+                const yesCenterY = yesRect.top + yesRect.height / 2;
+
+                while (attempts < maxAttempts) {
+                    newLeft = minLeft + Math.random() * (maxLeft - minLeft);
+                    newTop = minTop + Math.random() * (maxTop - minTop);
+
+                    // distance from cursor
+                    const dx = (newLeft + btnW/2) - cursorX;
+                    const dy = (newTop + btnH/2) - cursorY;
+                    const distToCursor = Math.sqrt(dx*dx + dy*dy);
+
+                    // distance from yes button (avoid covering it too much)
+                    const dxYes = (newLeft + btnW/2) - yesCenterX;
+                    const dyYes = (newTop + btnH/2) - yesCenterY;
+                    const distToYes = Math.sqrt(dxYes*dxYes + dyYes*dyYes);
+
+                    // we want distToCursor > ESCAPE_DISTANCE*1.2 and distToYes > 150 (avoid yes button)
+                    if (distToCursor > ESCAPE_DISTANCE * 1.1 && distToYes > 140) {
+                        bestLeft = newLeft;
+                        bestTop = newTop;
+                        bestDistance = distToCursor;
+                        break;
+                    }
+
+                    // keep track of best if no perfect found
+                    if (distToCursor > bestDistance && distToYes > 100) {
+                        bestDistance = distToCursor;
+                        bestLeft = newLeft;
+                        bestTop = newTop;
+                    }
+                    attempts++;
+                }
+
+                // apply the new position
+                noBtn.style.left = bestLeft + 'px';
+                noBtn.style.top = bestTop + 'px';
+            }
+
+            // --- mouse move handler on document ---
+            function handleMouseMove(e) {
+                // if yes already clicked, no button should be disabled / hidden? 
+                // we keep it hidden via success (we'll hide it)
+                if (yesBtn.disabled) return; // yes already clicked
+
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                // get no button rect
+                const noRect = noBtn.getBoundingClientRect();
+                const noCenterX = noRect.left + noRect.width / 2;
+                const noCenterY = noRect.top + noRect.height / 2;
+
+                // distance from cursor to center of no button
+                const distX = mouseX - noCenterX;
+                const distY = mouseY - noCenterY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                // if distance is less than threshold, escape!
+                if (distance < ESCAPE_DISTANCE) {
+                    // Also make sure we don't escape if the button is already far? But it's close, so escape.
+                    escapeNoButton(mouseX, mouseY);
+                }
+
+                // also if the no button is in "fixed" mode and cursor gets near again, escape again
+                // This is covered because we recalc distance every move.
+            }
+
+            // Also detect if cursor is near via mouseenter on button? It's covered by mousemove.
+            // But also we want to avoid hovering: mousemove works, but if user moves very fast?
+            // Add a mouseover on the no button itself to force escape (extra safeguard)
+            noBtn.addEventListener('mouseenter', (e) => {
+                if (yesBtn.disabled) return;
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                escapeNoButton(mouseX, mouseY);
+            });
+
+            // Also handle window resize: if noBtn is fixed and out of view, bring it back? 
+            // For simplicity, we just reset position if it's way off? 
+            // We'll adjust on resize to keep inside viewport.
+            window.addEventListener('resize', () => {
+                if (isNoBtnEscaped) {
+                    const rect = noBtn.getBoundingClientRect();
+                    let left = rect.left;
+                    let top = rect.top;
+                    const maxLeft = window.innerWidth - rect.width - 10;
+                    const maxTop = window.innerHeight - rect.height - 10;
+                    let newLeft = Math.min(Math.max(left, 10), maxLeft);
+                    let newTop = Math.min(Math.max(top, 10), maxTop);
+                    if (newLeft !== left || newTop !== top) {
+                        noBtn.style.left = newLeft + 'px';
+                        noBtn.style.top = newTop + 'px';
+                    }
+                }
+            });
+
+            // --- YES button click ---
+            yesBtn.addEventListener('click', () => {
+                // disable both buttons to prevent further interaction
+                yesBtn.disabled = true;
+                noBtn.disabled = true;
+
+                // hide the no button and show success message
+                noBtn.style.display = 'none';
+                successMsg.classList.remove('hidden');
+
+                // change heading
+                const h1 = document.querySelector('h1');
+                h1.textContent = 'Yay! I knew it, Imesha! 💖';
+
+                // optional: mini hearts burst
+                for (let i = 0; i < 12; i++) {
+                    createMiniHeart();
+                }
+
+                // also update the sub text
+                const sub = document.querySelector('.sub');
+                if (sub) sub.textContent = 'You just made me the happiest! 🌟';
+            });
+
+            // ---- helper to create floating heart on yes ----
+            function createMiniHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('mini-heart');
+                heart.textContent = ['❤️', '💖', '💗', '💓', '💕', '🌸', '✨'][Math.floor(Math.random() * 7)];
+                // random position near yes button or random viewport
+                const startX = window.innerWidth * 0.5 + (Math.random() - 0.5) * 300;
+                const startY = window.innerHeight * 0.6 + (Math.random() - 0.5) * 150;
+                heart.style.left = startX + 'px';
+                heart.style.top = startY + 'px';
+                heart.style.fontSize = (1.2 + Math.random() * 1.8) + 'rem';
+                heart.style.animationDuration = (0.9 + Math.random() * 1.2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+
+            // ---- attach mousemove ----
+            document.addEventListener('mousemove', handleMouseMove);
+
+            // ---- also touch support for mobile: on touchmove, escape ----
+            document.addEventListener('touchmove', (e) => {
+                if (yesBtn.disabled) return;
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    const mouseX = touch.clientX;
+                    const mouseY = touch.clientY;
+                    // reuse escape check
+                    const noRect = noBtn.getBoundingClientRect();
+                    const noCenterX = noRect.left + noRect.width / 2;
+                    const noCenterY = noRect.top + noRect.height / 2;
+                    const distX = mouseX - noCenterX;
+                    const distY = mouseY - noCenterY;
+                    const distance = Math.sqrt(distX * distX + distY * distY);
+                    if (distance < ESCAPE_DISTANCE) {
+                        escapeNoButton(mouseX, mouseY);
+                    }
+                }
+            }, { passive: true });
+
+            // also on touchstart for no button, move it instantly
+            noBtn.addEventListener('touchstart', (e) => {
+                if (yesBtn.disabled) return;
+                e.preventDefault(); // prevent accidental click
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    escapeNoButton(touch.clientX, touch.clientY);
+                }
+            }, { passive: false });
+        })();
+    </script>
+</body>
+</html>
